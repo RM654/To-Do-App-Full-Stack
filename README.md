@@ -11,58 +11,7 @@ A full-stack To‑Do application built with:
 
 ---
 
-## Project Structure
 
-.
-├── docker-compose.yml
-├── frontend/
-│ ├── build/
-│ │ ├── bundle
-│ │ ├── bundle.js.LICENSE
-│ │ └── index.html
-│ ├── node_modules/
-│ ├── public/
-│ │ └── index.html
-│ ├── src/
-│ │ ├── api/
-│ │ ├── components/
-│ │ │ └── TaskCard.jsx (or .js)
-│ │ ├── setupTests.js
-│ │ ├── index.jsx (or .js)
-│ │ └── App.jsx (or .js)
-│ ├── tests/
-│ │ ├── App.test.js
-│ │ └── TaskCard.test.js
-│ ├── tests/
-│ │ ├── App.test.js
-│ │ ├── TaskCard.test.js
-│ │ └── e2e/
-│ │ └── todo.spec.js
-│ ├── test-results/
-│ │ └── .last-run
-│ ├── .babelrc
-│ ├── babel.config.js
-│ ├── Dockerfile
-│ ├── nginx.conf
-│ ├── package.json
-│ ├── package-lock.json
-│ ├── playwright.config.js
-│ ├── webpack.config.js
-│ └── yarn.lock
-└── backend/
-├── Dockerfile
-├── requirements.txt
-├── app/
-│ ├── crud.py
-│ ├── database.py
-│ ├── main.py
-│ ├── models.py
-│ └── schemas.py
-└── tests/
-├── test_crud.py
-└── test_main.py
-
----
 
 ## Prerequisites
 
