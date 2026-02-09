@@ -1,29 +1,27 @@
-# ---------- Build Stage ----------
-FROM node:18-slim as build
+# backend/Dockerfile
 
+FROM python:3.11-slim
+
+# Set working directory
 WORKDIR /app
 
-# Copy dependency files
-COPY package.json yarn.lock ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y gcc libpq-dev curl && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies using Yarn
-RUN yarn install
+# ✅ Add wait-for-it script to root
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
-# Copy the rest of the frontend app
-COPY . .
+# Copy Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Build the frontend app
-RUN yarn build
+# Copy backend app code and tests
+COPY app/ ./app/
+COPY tests/ ./tests/
 
-# ---------- Serve Stage ----------
-FROM nginx:stable-alpine
+# Expose FastAPI port
+EXPOSE 8000
 
-# Copy custom nginx config to proxy /api to backend
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy build output from previous stage
-COPY --from=build /app/build /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Default CMD (can be overridden by docker-compose)
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
