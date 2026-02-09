@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "../App";
 import * as api from "../api";
 
+// Mock the API functions
 jest.mock("../api");
 
 describe("App", () => {
@@ -10,14 +11,9 @@ describe("App", () => {
     jest.clearAllMocks();
   });
 
-  test("renders tasks", async () => {
+  it("loads and displays tasks", async () => {
     api.fetchTasks.mockResolvedValue([
-      {
-        id: 1,
-        title: "Test Task",
-        description: "Test Desc",
-        is_done: false
-      }
+      { id: 1, title: "Sample Task", description: "Sample Desc", is_done: false }
     ]);
 
     render(<App />);
@@ -25,34 +21,34 @@ describe("App", () => {
     expect(api.fetchTasks).toHaveBeenCalled();
 
     await waitFor(() => {
-      expect(screen.getByText("Test Task")).toBeInTheDocument();
-      expect(screen.getByText("Test Desc")).toBeInTheDocument();
+      expect(screen.getByText("Sample Task")).toBeInTheDocument();
+      expect(screen.getByText("Sample Desc")).toBeInTheDocument();
     });
   });
 
-  test("creates a new task", async () => {
-    api.fetchTasks.mockResolvedValue([]);
+  it("creates a new task", async () => {
+    api.fetchTasks.mockResolvedValue([]); // Initial load
     api.createTask.mockResolvedValue({
       id: 2,
       title: "New Task",
-      description: "New Desc",
-      is_done: false
+      description: "New Description",
+      is_done: false,
     });
 
     render(<App />);
 
     fireEvent.change(screen.getByLabelText(/Title/i), {
-      target: { value: "New Task" }
+      target: { value: "New Task" },
     });
 
     fireEvent.change(screen.getByLabelText(/Description/i), {
-      target: { value: "New Desc" }
+      target: { value: "New Description" },
     });
 
     fireEvent.click(screen.getByText("Create Task"));
 
     await waitFor(() => {
-      expect(api.createTask).toHaveBeenCalledWith("New Task", "New Desc");
+      expect(api.createTask).toHaveBeenCalledWith("New Task", "New Description");
     });
   });
 });
