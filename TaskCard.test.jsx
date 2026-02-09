@@ -6,19 +6,19 @@ describe("TaskCard", () => {
   const task = {
     id: 1,
     title: "Test Task",
-    description: "Test Description"
+    description: "This is a test",
   };
 
-  test("renders task title and description", () => {
+  it("renders title and description", () => {
     render(<TaskCard task={task} onDone={() => {}} />);
     expect(screen.getByText("Test Task")).toBeInTheDocument();
-    expect(screen.getByText("Test Description")).toBeInTheDocument();
+    expect(screen.getByText("This is a test")).toBeInTheDocument();
   });
 
-  test("calls onDone when Done button is clicked", () => {
-    const onDone = jest.fn();
-    render(<TaskCard task={task} onDone={onDone} />);
+  it("calls onDone when 'Done' button is clicked", () => {
+    const mockOnDone = jest.fn();
+    render(<TaskCard task={task} onDone={mockOnDone} />);
     fireEvent.click(screen.getByText("Done"));
-    expect(onDone).toHaveBeenCalledWith(task.id);
+    expect(mockOnDone).toHaveBeenCalledWith(1);
   });
 });
