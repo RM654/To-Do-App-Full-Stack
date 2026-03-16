@@ -22,19 +22,19 @@ test.describe('ToDo App E2E', () => {
     await expect(newTaskHeading).toBeVisible();
     console.log('Task heading is visible');
 
-    // ✅ Go two levels up from the heading to get the task card
+    // Go two levels up from the heading to get the task card
     const taskCard = newTaskHeading.locator('..').locator('..');
 
     // Check the title and description inside the card
     await expect(taskCard.getByRole('heading')).toHaveText(uniqueTitle);
     await expect(taskCard.locator('p')).toHaveText(description);
 
-    // ✅ Click the "Done" button
+    // Click the "Done" button
     console.log('Checking for Done button inside taskCard...');
     await expect(taskCard.getByRole('button', { name: 'Done' })).toBeVisible();
     await taskCard.getByRole('button', { name: 'Done' }).click();
 
-    // ✅ Wait for the task to be removed
+    // Wait for the task to be removed
     await expect(page.getByRole('heading', { name: uniqueTitle })).toHaveCount(0);
   }, 60000); // Timeout set to 60 seconds
 
